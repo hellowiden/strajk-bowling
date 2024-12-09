@@ -38,11 +38,11 @@ export default [
 
   // Jest configuration
   {
-    files: ["**/*.{test,spec}.{js,mjs,cjs,jsx}"], // Target test files
+    files: ["**/*.{test,spec}.{js,mjs,cjs,jsx}"], 
     languageOptions: {
       globals: {
-        ...globals.node, // Node.js globals for test files
-        ...globals.jest, // Jest globals
+        ...globals.node, 
+        ...globals.jest, 
       },
       parserOptions: {
         ecmaVersion: "latest",
@@ -53,7 +53,7 @@ export default [
       jest: pluginJest,
     },
     rules: {
-      ...pluginJest.configs.recommended.rules, // Apply recommended Jest rules
+      ...pluginJest.configs.recommended.rules, 
     },
   },
 ];
