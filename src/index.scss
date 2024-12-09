@@ -1,5 +1,5 @@
-@import './scss/buttons';
-@import './scss/variables';
+@use 'scss/buttons';
+@use 'scss/variables';
 
 :root {
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
@@ -7,7 +7,7 @@
   font-weight: 400;
 
   color-scheme: light dark;
-  background-color: $background-color;
+  background-color: variables.$background-color;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
