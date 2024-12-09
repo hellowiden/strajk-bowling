@@ -3,7 +3,9 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import Booking from '../../src/pages/Booking';
 
 test('shows error if players and shoes do not match', () => {
-  render(<Booking />);
+  render(
+    React.createElement(Booking, null)
+  );
 
   const playersInput = screen.getByLabelText(/Number of awesome bowlers/i);
   const addButton = screen.getByText('+');
