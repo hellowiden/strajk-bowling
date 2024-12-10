@@ -2,16 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
 
-// Mock import.meta for the test
-Object.defineProperty(global, 'importMeta', {
-    value: {
-        env: {
-            BASE_URL: '/',
-        },
-    },
-    writable: true,
-});
-
 jest.mock('../src/views/Booking', () => {
     const Booking = () => <div>Booking View</div>;
     Booking.displayName = 'Booking';
@@ -34,6 +24,11 @@ jest.mock('../src/views/Confirmation', () => {
     Confirmation.displayName = 'Confirmation';
     return Confirmation;
 });
+
+// Mock router to handle `import.meta.env.BASE_URL` issue
+jest.mock('../src/router', () => ({
+    basename: '/',
+}));
 
 import App from '../src/App';
 
