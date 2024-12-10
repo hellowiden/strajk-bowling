@@ -1,4 +1,4 @@
-jest.mock('../src/components/Booking/Booking', () => {
+jest.mock('../src/views/Booking', () => {
     return jest.fn().mockImplementation(() => {
         return {
             booking: {
@@ -24,7 +24,7 @@ jest.mock('../src/components/Booking/Booking', () => {
     });
 });
 
-const Booking = require('../src/components/Booking/Booking');
+const Booking = require('../src/views/Booking');
 const { render, screen, fireEvent } = require('@testing-library/react');
 const React = require('react');
 
