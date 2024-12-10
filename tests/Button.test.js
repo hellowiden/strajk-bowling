@@ -4,6 +4,13 @@ import "@testing-library/jest-dom";
 import Booking from "../src/views/Booking";
 import { BrowserRouter } from "react-router-dom";
 
+// Mocking the fetch function
+global.fetch = jest.fn(() =>
+  Promise.resolve({
+    json: () => Promise.resolve({ id: "12345", price: "600", when: "2023-12-13T15:30", people: 4, lanes: 1 }),
+  })
+);
+
 describe("Booking Component", () => {
   const setup = () => {
     render(
@@ -54,7 +61,7 @@ describe("Booking Component", () => {
     expect(screen.queryByLabelText(/Shoe size \/ person 1/i)).not.toBeInTheDocument();
   });
 
-  test("disables submit button when number of players exceeds max players per lane", () => {
+  test("displays error when number of players exceeds max players per lane", () => {
     setup();
 
     const lanesInput = screen.getByLabelText(/Number of lanes/i);
@@ -67,5 +74,18 @@ describe("Booking Component", () => {
     fireEvent.click(submitButton);
 
     expect(screen.getByText(/Det får max vara 4 spelare per bana/i)).toBeInTheDocument();
+  });
+
+  test("submits form with valid data", async () => {
+    setup();
+
+    fireEvent.change(screen.getByLabelText(/Date/i), { target: { value: "2023-12-13" } });
+    fireEvent.change(screen.getByLabelText(/Time/i), { target: { value: "15:30" } });
+    fireEvent.change(screen.getByLabelText(/Number of awesome bowlers/i), { target: { value: "4" } });
+    fireEvent.change(screen.getByLabelText(/Number of lanes/i), { target: { value: "1" } });
+
+    fireEvent.click(screen.getByText(/strIIIIIike!/i));
+
+    expect(await screen.findByText(/Sweet, let's go!/i)).toBeInTheDocument();
   });
 });
