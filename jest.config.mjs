@@ -6,7 +6,7 @@
 /** @type {import('jest').Config} */
 const config = {
 
-  testEnvironment: 'jsdom',
+  testEnvironment: 'jest-environment-jsdom',
   transform: {
     '^.+\\.(js|jsx|ts|tsx)$': 'babel-jest', // Use Babel to transform JS and JSX files
   },
