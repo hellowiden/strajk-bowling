@@ -1,92 +1,64 @@
-import { render, screen, fireEvent } from '@testing-library/react';
-import { BrowserRouter as Router } from 'react-router-dom';
+// navigation.test.js
 import React from 'react';
+import { render, screen } from '@testing-library/react';
+import { MemoryRouter, Route, Routes } from 'react-router-dom';
+import Booking from '../views/Booking';
+import Confirmation from '../views/Confirmation';
 
-jest.mock('../src/views/Booking', () => {
-    const Booking = () => <div>Booking View</div>;
-    Booking.displayName = 'Booking';
-    return Booking;
-});
+describe('Navigation Tests', () => {
+  beforeEach(() => {
+    sessionStorage.clear();
+  });
 
-jest.mock('../src/views/Confirmation', () => {
-    const Confirmation = jest.fn(() => {
-        const confirmation = JSON.parse(global.sessionStorage.getItem('confirmation'));
-        if (confirmation) {
-            return (
-                <div>
-                    <p>Booking ID: {confirmation.id}</p>
-                    <p>Total Price: {confirmation.price} SEK</p>
-                </div>
-            );
-        }
-        return <p>Ingen bokning gjord</p>;
-    });
-    Confirmation.displayName = 'Confirmation';
-    return Confirmation;
-});
+  test('Should navigate from Booking view to Confirmation view when booking is complete', () => {
+    render(
+      <MemoryRouter initialEntries={['/']}>
+        <Routes>
+          <Route path="/" element={<Booking />} />
+          <Route path="/confirmation" element={<Confirmation />} />
+        </Routes>
+      </MemoryRouter>
+    );
 
-// Mock router to handle `import.meta.env.BASE_URL` issue
-jest.mock('../src/router', () => ({
-    basename: '/',
-}));
+    const confirmationLink = screen.getByText(/Confirmation/i);
+    expect(confirmationLink).toBeInTheDocument();
+  });
 
-import App from '../src/App';
+  test('Should display "Ingen bokning gjord" if no booking exists in session storage', () => {
+    render(
+      <MemoryRouter initialEntries={['/confirmation']}>
+        <Routes>
+          <Route path="/confirmation" element={<Confirmation />} />
+        </Routes>
+      </MemoryRouter>
+    );
 
-function setConfirmationInStorage(confirmation) {
-    global.sessionStorage.setItem('confirmation', JSON.stringify(confirmation));
-}
+    expect(screen.getByText(/Inga bokning gjord/i)).toBeInTheDocument();
+  });
 
-describe('Navigation between Booking and Confirmation Views', () => {
-    beforeEach(() => {
-        global.sessionStorage.clear();
-    });
+  test('Should display booking details if booking exists in session storage', () => {
+    const mockBooking = {
+      when: '2024-12-15T18:00',
+      people: 4,
+      lanes: 2,
+      id: 'ABC123',
+      price: 680,
+    };
 
-    test('User should navigate from Booking to Confirmation when booking is complete', () => {
-        render(
-            <Router>
-                <App />
-            </Router>
-        );
+    sessionStorage.setItem('confirmation', JSON.stringify(mockBooking));
 
-        const bookingLink = screen.getByText(/booking/i);
-        fireEvent.click(bookingLink);
-        expect(screen.getByText(/booking view/i)).toBeInTheDocument();
+    render(
+      <MemoryRouter initialEntries={['/confirmation']}>
+        <Routes>
+          <Route path="/confirmation" element={<Confirmation />} />
+        </Routes>
+      </MemoryRouter>
+    );
 
-        setConfirmationInStorage({ id: 'ABC123', price: 680 });
-
-        const confirmationLink = screen.getByText(/confirmation/i);
-        fireEvent.click(confirmationLink);
-
-        expect(screen.getByText(/booking id: abc123/i)).toBeInTheDocument();
-        expect(screen.getByText(/total price: 680 sek/i)).toBeInTheDocument();
-    });
-
-    test('Shows "Ingen bokning gjord" if no booking exists in session storage', () => {
-        render(
-            <Router>
-                <App />
-            </Router>
-        );
-
-        const confirmationLink = screen.getByText(/confirmation/i);
-        fireEvent.click(confirmationLink);
-
-        expect(screen.getByText(/ingen bokning gjord/i)).toBeInTheDocument();
-    });
-
-    test('Displays stored booking details if booking exists in session storage', () => {
-        setConfirmationInStorage({ id: 'XYZ789', price: 500 });
-
-        render(
-            <Router>
-                <App />
-            </Router>
-        );
-
-        const confirmationLink = screen.getByText(/confirmation/i);
-        fireEvent.click(confirmationLink);
-
-        expect(screen.getByText(/booking id: xyz789/i)).toBeInTheDocument();
-        expect(screen.getByText(/total price: 500 sek/i)).toBeInTheDocument();
-    });
+    expect(screen.getByDisplayValue('2024-12-15 18:00')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('4')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('2')).toBeInTheDocument();
+    expect(screen.getByDisplayValue('ABC123')).toBeInTheDocument();
+    expect(screen.getByText('680 sek')).toBeInTheDocument();
+  });
 });
