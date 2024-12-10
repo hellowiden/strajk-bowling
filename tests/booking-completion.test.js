@@ -1,4 +1,4 @@
-jest.mock('../src/components/Booking/Booking', () => {
+jest.mock('../src/components/views/Booking', () => {
     return jest.fn().mockImplementation(() => {
         return {
             booking: {
