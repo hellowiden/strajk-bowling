@@ -12,6 +12,8 @@ const router = createBrowserRouter([
       path: '/confirmation',
       element: <Confirmation />,
     }
-]);
+],
+  {basename: import.meta.env.BASE_URL}
+);
 
 export default router;
