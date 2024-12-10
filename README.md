@@ -16,8 +16,6 @@ Du hittar de user stories som har implementerats nedan och som de ska skrivas te
 - Användaren ska kunna välja ett datum och en tid från ett kalender- och tidvalssystem.
 - Användaren ska kunna ange antal spelare (minst 1 spelare).
 - Användaren ska kunna reservera ett eller flera banor beroende på antal spelare.
-- VG - Ifall användaren inte fyller i något av ovanstående så ska ett felmeddelande visas
-- VG - Om det inte finns tillräckligt med lediga banor för det angivna antalet spelare, ska användaren få ett felmeddelande.
 
 ### Som användare vill jag kunna välja skostorlek för varje spelare så varje spelare får skor som passar.
 
@@ -26,9 +24,6 @@ Du hittar de user stories som har implementerats nedan och som de ska skrivas te
 - Användaren ska kunna ange skostorlek för varje spelare.
 - Användaren ska kunna ändra skostorlek för varje spelare.
 - Det ska vara möjligt att välja skostorlek för alla spelare som ingår i bokningen.
-- VG - Om användaren försöker slutföra bokningen utan att ange skostorlek för en spelare som har valt att boka skor, ska systemet visa ett felmeddelande och be om att skostorleken anges.
-- VG - Om antalet personer och skor inte matchas ska ett felmeddelande visas
-- Systemet ska visa en översikt där användaren kan kontrollera de valda skostorlekarna för varje spelare innan bokningen slutförs.
 
 ### Som användare vill jag kunna ta bort ett fält för skostorlek om jag råkade klicka i ett för mycket så jag inte boka skor i onödan.
 
@@ -61,11 +56,6 @@ Du hittar de user stories som har implementerats nedan och som de ska skrivas te
 - Mockat POST-anrop med Mock service worker.
 - Testerna triggas via en Github actions på main-branchen. Det bör alltså finnas en grön bock i ditt Github repo när du lämnar in examinationen. Det ska heller inte gå och deploya om inte man når en viss procent.
 
-**Får Väl Godkänt ska du:**
-
-- Har skrivit tester för alla acceptanskriterier som är VG. Observera att det finns flera unika felmeddelanden och varje felmeddelande ska vara i sitt eget test. Här gäller det också att tänka igenom hur man skriver sina test. Om vi tar, att man ska ha fyllt i allt fält (datum, tid, antalet spelare och banor) så gäller det att testet kollar att felmeddelandet visas för flera kombinationer av vad man glömt att fylla i.
-- Du ska ha över 90% coverage i dina tester.
-
 ## Inlämning
 
-Lämna in länk till Githubrepo med koden och tester på Azomo senast **fredagen 13/12 kl 23:59**.
+**fredagen 13/12 kl 23:59**.
