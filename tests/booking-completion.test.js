@@ -24,7 +24,7 @@ jest.mock('../src/components/views/Booking', () => {
     });
 });
 
-const Booking = require('../src/components/Booking/Booking');
+const Booking = require('../src/views/Booking');
 
 describe('Booking Completion', () => {
     let bookingComponent;
