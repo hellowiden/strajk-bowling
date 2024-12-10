@@ -2,15 +2,17 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import Booking from '../src/views/Booking';
-import Confirmation from '../src/views/Confirmation';
+import Booking from '../views/Booking';
+import Confirmation from '../views/Confirmation';
+import '@testing-library/jest-dom';
 
 describe('Navigation Tests', () => {
   beforeEach(() => {
+    // Clear session storage before each test
     sessionStorage.clear();
   });
 
-  test('Should navigate from Booking view to Confirmation view when booking is complete', () => {
+  test('User can navigate from Booking view to Confirmation view when booking is complete', () => {
     render(
       <MemoryRouter initialEntries={['/']}>
         <Routes>
@@ -20,11 +22,11 @@ describe('Navigation Tests', () => {
       </MemoryRouter>
     );
 
-    const confirmationLink = screen.getByText(/Confirmation/i);
+    const confirmationLink = screen.getByText(/Confirmation/i); // Navigation link to confirmation
     expect(confirmationLink).toBeInTheDocument();
   });
 
-  test('Should display "Ingen bokning gjord" if no booking exists in session storage', () => {
+  test('Displays "Ingen bokning gjord" if no booking exists in session storage', () => {
     render(
       <MemoryRouter initialEntries={['/confirmation']}>
         <Routes>
@@ -36,7 +38,7 @@ describe('Navigation Tests', () => {
     expect(screen.getByText(/Inga bokning gjord/i)).toBeInTheDocument();
   });
 
-  test('Should display booking details if booking exists in session storage', () => {
+  test('Displays booking details if a booking exists in session storage', () => {
     const mockBooking = {
       when: '2024-12-15T18:00',
       people: 4,
