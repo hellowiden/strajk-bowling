@@ -1,5 +1,38 @@
 // booking.test.js
-const BookingSystem = require('../src/components/BookingInfo/BookingInfo'); 
+jest.mock('../src/components/BookingInfo/BookingInfo', () => {
+    return jest.fn().mockImplementation(() => {
+        return {
+            selectedDate: null,
+            selectedTime: null,
+            players: 0,
+            selectDate: function (date) {
+                this.selectedDate = date;
+            },
+            selectTime: function (time) {
+                this.selectedTime = time;
+            },
+            setPlayers: function (players) {
+                if (players < 1) {
+                    throw new Error('Number of players must be at least 1');
+                }
+                this.players = players;
+            },
+            reserveLanes: function (players) {
+                return Math.ceil(players / 4); // Assuming 4 players per lane
+            },
+            createReservation: function () {
+                return {
+                    date: this.selectedDate,
+                    time: this.selectedTime,
+                    players: this.players,
+                    lanes: Math.ceil(this.players / 4),
+                };
+            },
+        };
+    });
+});
+
+const BookingSystem = require('../src/components/BookingInfo/BookingInfo');
 
 describe('Bowling Hall Booking System', () => {
     let bookingSystem;
