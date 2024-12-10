@@ -9,8 +9,8 @@ jest.mock('../src/views/Booking', () => {
 });
 
 jest.mock('../src/views/Confirmation', () => {
-    const Confirmation = jest.fn().mockImplementation(() => {
-        const confirmation = JSON.parse(sessionStorage.getItem('confirmation'));
+    return jest.fn(() => {
+        const confirmation = JSON.parse(global.sessionStorage.getItem('confirmation'));
         if (confirmation) {
             return (
                 <div>
@@ -21,19 +21,17 @@ jest.mock('../src/views/Confirmation', () => {
         }
         return <p>Ingen bokning gjord</p>;
     });
-    Confirmation.displayName = 'Confirmation';
-    return Confirmation;
 });
 
 import App from '../src/App';
 
 function setConfirmationInStorage(confirmation) {
-    sessionStorage.setItem('confirmation', JSON.stringify(confirmation));
+    global.sessionStorage.setItem('confirmation', JSON.stringify(confirmation));
 }
 
 describe('Navigation between Booking and Confirmation Views', () => {
     beforeEach(() => {
-        sessionStorage.clear();
+        global.sessionStorage.clear();
     });
 
     test('User should navigate from Booking to Confirmation when booking is complete', () => {
