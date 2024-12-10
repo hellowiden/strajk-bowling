@@ -2,6 +2,16 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { BrowserRouter as Router } from 'react-router-dom';
 import React from 'react';
 
+// Mock import.meta for the test
+Object.defineProperty(global, 'importMeta', {
+    value: {
+        env: {
+            BASE_URL: '/',
+        },
+    },
+    writable: true,
+});
+
 jest.mock('../src/views/Booking', () => {
     const Booking = () => <div>Booking View</div>;
     Booking.displayName = 'Booking';
@@ -9,7 +19,7 @@ jest.mock('../src/views/Booking', () => {
 });
 
 jest.mock('../src/views/Confirmation', () => {
-    return jest.fn(() => {
+    const Confirmation = jest.fn(() => {
         const confirmation = JSON.parse(global.sessionStorage.getItem('confirmation'));
         if (confirmation) {
             return (
@@ -21,6 +31,8 @@ jest.mock('../src/views/Confirmation', () => {
         }
         return <p>Ingen bokning gjord</p>;
     });
+    Confirmation.displayName = 'Confirmation';
+    return Confirmation;
 });
 
 import App from '../src/App';
