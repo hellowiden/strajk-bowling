@@ -2,8 +2,8 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import Booking from '../views/Booking';
-import Confirmation from '../views/Confirmation';
+import Booking from '../src/views/Booking';
+import Confirmation from '../src/views/Confirmation';
 
 describe('Navigation Tests', () => {
   beforeEach(() => {
