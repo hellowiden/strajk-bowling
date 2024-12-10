@@ -15,32 +15,37 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Check out the code
       - uses: actions/checkout@v3
 
+      # Setup Node.js environment with the latest LTS version (18.x)
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
 
+      # Install dependencies
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
+      # Lint the code
       - name: Lint
         run: npm run lint
 
-      #- name: jest
-      #run: npm test
-
+      # Build the project
       - name: Build dist
         run: npm run build
 
+      # Setup GitHub Pages configuration
       - name: Setup Pages
         uses: actions/configure-pages@v3
 
+      # Upload build artifacts to GitHub Pages
       - name: Upload dist folder
         uses: actions/upload-pages-artifact@v1
         with:
           path: './dist'
 
+      # Deploy to GitHub Pages
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v1
