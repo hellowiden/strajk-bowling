@@ -1,5 +1,5 @@
 // booking.test.js
-const BookingSystem = require('./bookingSystem'); // Assumes you have a bookingSystem module to test
+const BookingSystem = require('../src/components/BookingInfo/BookingInfo'); 
 
 describe('Bowling Hall Booking System', () => {
     let bookingSystem;
