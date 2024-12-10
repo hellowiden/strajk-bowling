@@ -29,4 +29,4 @@ describe('Dummy Test Suite', () => {
     });
 });
 
-module.exports = { add, subtract };
+
