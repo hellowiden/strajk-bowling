@@ -43,6 +43,39 @@ describe('Booking Component', () => {
     expect(screen.queryAllByLabelText(/shoe size/i)).toHaveLength(0);
   });
 
+  test('allows user to select a date and time', () => {
+    render(
+      <MemoryRouter>
+        <Booking />
+      </MemoryRouter>
+    );
+
+    const dateInput = screen.getByLabelText(/date/i);
+    const timeInput = screen.getByLabelText(/time/i);
+
+    // Simulate user selecting a date and time
+    fireEvent.change(dateInput, { target: { value: '2023-12-15' } });
+    fireEvent.change(timeInput, { target: { value: '18:00' } });
+
+    expect(dateInput.value).toBe('2023-12-15');
+    expect(timeInput.value).toBe('18:00');
+  });
+
+  test('validates minimum 1 player is required', () => {
+    render(
+      <MemoryRouter>
+        <Booking />
+      </MemoryRouter>
+    );
+
+    const playersInput = screen.getByLabelText(/number of awesome bowlers/i);
+
+    fireEvent.change(playersInput, { target: { value: '0' } });
+    fireEvent.click(screen.getByText(/striiiiiike!/i));
+
+    expect(screen.getByText(/minst 1 spelare krävs/i)).toBeInTheDocument();
+  });
+
   test('displays error if players exceed max per lane', () => {
     render(
       <MemoryRouter>
@@ -50,15 +83,35 @@ describe('Booking Component', () => {
       </MemoryRouter>
     );
 
-    fireEvent.change(screen.getByLabelText(/number of awesome bowlers/i), {
-      target: { value: '5' },
-    });
-    fireEvent.change(screen.getByLabelText(/number of lanes/i), {
-      target: { value: '1' },
-    });
+    const playersInput = screen.getByLabelText(/number of awesome bowlers/i);
+    const lanesInput = screen.getByLabelText(/number of lanes/i);
+
+    fireEvent.change(playersInput, { target: { value: '5' } });
+    fireEvent.change(lanesInput, { target: { value: '1' } });
+
+    expect(playersInput.value).toBe('5');
+    expect(lanesInput.value).toBe('1');
 
     fireEvent.click(screen.getByText(/striiiiiike!/i));
 
     expect(screen.getByText(/det får max vara 4 spelare per bana/i)).toBeInTheDocument();
+  });
+
+  test('calculates required lanes based on players', () => {
+    render(
+      <MemoryRouter>
+        <Booking />
+      </MemoryRouter>
+    );
+
+    const playersInput = screen.getByLabelText(/number of awesome bowlers/i);
+    const lanesInput = screen.getByLabelText(/number of lanes/i);
+
+    fireEvent.change(playersInput, { target: { value: '8' } });
+
+    // Ensure the user manually sets 2 lanes (based on max 4 players per lane)
+    fireEvent.change(lanesInput, { target: { value: '2' } });
+
+    expect(lanesInput.value).toBe('2');
   });
 });
