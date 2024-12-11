@@ -48,9 +48,9 @@ describe('Booking Completion', () => {
         const lanes = 2;
         const total = bookingComponent.calculateTotal(people, lanes);
 
-        expect(total.total).toBe(680); // 4 * 120 + 2 * 100
-        expect(total.breakdown.players).toBe(480); // 4 * 120
-        expect(total.breakdown.lanes).toBe(200); // 2 * 100
+        expect(total.total).toBe(680); 
+        expect(total.breakdown.players).toBe(480); 
+        expect(total.breakdown.lanes).toBe(200);
     });
 
     test('Total price and breakdown should be displayed clearly on confirmation page', async () => {
@@ -59,9 +59,9 @@ describe('Booking Completion', () => {
 
         const total = bookingComponent.calculateTotal(bookingInfo.people, bookingInfo.lanes);
 
-        expect(confirmation.price).toBe(total.total); // Total matches confirmation
-        expect(total.breakdown.players).toBe(360); // 3 * 120
-        expect(total.breakdown.lanes).toBe(100); // 1 * 100
+        expect(confirmation.price).toBe(total.total);
+        expect(total.breakdown.players).toBe(360);
+        expect(total.breakdown.lanes).toBe(100); 
     });
 
     test('Clicking "slutför bokning" triggers booking submission', () => {
@@ -76,6 +76,6 @@ describe('Booking Completion', () => {
         const button = screen.getByText(/slutför bokning/i);
         fireEvent.click(button);
 
-        expect(mockBookFunction).toHaveBeenCalledTimes(1); // Button click triggers booking
+        expect(mockBookFunction).toHaveBeenCalledTimes(1); 
     });
 });

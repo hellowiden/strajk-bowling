@@ -18,7 +18,7 @@ jest.mock('../src/components/BookingInfo/BookingInfo', () => {
                 this.players = players;
             },
             reserveLanes: function (players) {
-                return Math.ceil(players / 4); // Assuming 4 players per lane
+                return Math.ceil(players / 4); 
             },
             createReservation: function () {
                 return {
@@ -65,8 +65,8 @@ describe('Bowling Hall Booking System', () => {
         const players = 8;
         const lanes = bookingSystem.reserveLanes(players);
         
-        expect(lanes).toBeGreaterThan(0); // At least 1 lane should be reserved
-        expect(lanes).toBe(Math.ceil(players / 4)); // Assuming 4 players per lane
+        expect(lanes).toBeGreaterThan(0); 
+        expect(lanes).toBe(Math.ceil(players / 4)); 
     });
 
     test('Booking system should store complete reservation details', () => {

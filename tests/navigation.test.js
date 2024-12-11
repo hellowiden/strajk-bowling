@@ -8,7 +8,6 @@ import '@testing-library/jest-dom';
 
 describe('Navigation Tests', () => {
   beforeEach(() => {
-    // Clear session storage before each test
     sessionStorage.clear();
   });
 
@@ -22,7 +21,7 @@ describe('Navigation Tests', () => {
       </MemoryRouter>
     );
 
-    const confirmationLink = screen.getByText(/Confirmation/i); // Navigation link to confirmation
+    const confirmationLink = screen.getByText(/Confirmation/i); 
     expect(confirmationLink).toBeInTheDocument();
   });
 
