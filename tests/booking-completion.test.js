@@ -1,15 +1,28 @@
-jest.mock('../src/views/Booking', () => ({
-    booking: { people: 0, lanes: 0 },
-    sendBooking: async (bookingInfo) => ({
-        id: 'ABC123',
-        price: bookingInfo.people * 120 + bookingInfo.lanes * 100,
-    }),
-    calculateTotal: (people, lanes) => ({
-        total: people * 120 + lanes * 100,
-        breakdown: { players: people * 120, lanes: lanes * 100 },
-    }),
-}));
-
+jest.mock('../src/views/Booking', () => {
+    return jest.fn().mockImplementation(() => {
+        return {
+            booking: {
+                people: 0,
+                lanes: 0,
+            },
+            sendBooking: async function (bookingInfo) {
+                return {
+                    id: 'ABC123',
+                    price: bookingInfo.people * 120 + bookingInfo.lanes * 100,
+                };
+            },
+            calculateTotal: function (people, lanes) {
+                return {
+                    total: people * 120 + lanes * 100,
+                    breakdown: {
+                        players: people * 120,
+                        lanes: lanes * 100,
+                    },
+                };
+            },
+        };
+    });
+});
 
 const Booking = require('../src/views/Booking');
 const { render, screen, fireEvent } = require('@testing-library/react');
