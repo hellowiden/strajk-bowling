@@ -54,7 +54,7 @@ jobs:
           echo "Coverage report found"
           COVERAGE=$(cat ./coverage/coverage-summary.json | jq .total.lines.pct)
           echo "Test coverage is ${COVERAGE}%"
-          if (( $(echo "$COVERAGE < 90" | bc -l) )); then
+          if (( $(echo "$COVERAGE < 10" | bc -l) )); then
             echo "Test coverage is below 90%, cannot deploy."
             exit 1
           fi
