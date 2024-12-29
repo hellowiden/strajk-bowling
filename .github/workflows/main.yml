@@ -14,11 +14,16 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # Check out the code
       - uses: actions/checkout@v3
+
+      # Setup Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '18'
+
+      # Install dependencies
       - name: Install dependencies
         run: npm install
 
@@ -26,20 +31,42 @@ jobs:
       - name: Lint
         run: npm run lint
 
+      # Run tests with coverage
       - name: Run tests with coverage
         run: npm test -- --coverage
         env:
           CI: true
 
-  build-and-deploy:
-    needs: test
+  check-coverage:
     runs-on: ubuntu-latest
-
+    needs: test
     steps:
       # Check out the code
       - uses: actions/checkout@v3
 
-      # Setup Node.js environment with the latest LTS version (18.x)
+      # Check test coverage
+      - name: Check test coverage
+        run: |
+          if [ ! -f ./coverage/coverage-summary.json ]; then
+            echo "Coverage report not found!"
+            exit 1
+          fi
+          echo "Coverage report found"
+          COVERAGE=$(cat ./coverage/coverage-summary.json | jq .total.lines.pct)
+          echo "Test coverage is ${COVERAGE}%"
+          if (( $(echo "$COVERAGE < 90" | bc -l) )); then
+            echo "Test coverage is below 90%, cannot deploy."
+            exit 1
+          fi
+
+  build-and-deploy:
+    needs: check-coverage
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the code
+      - uses: actions/checkout@v3
+
+      # Setup Node.js environment
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
